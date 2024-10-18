@@ -6,6 +6,8 @@ services:
     volumes:
       - main-volume:/var/www/html/
       - ./app/:/var/www/html/
+    networks:
+      - main-network
   nginx:
     image: nginx:latest
     ports:
@@ -14,6 +16,8 @@ services:
       - main-volume:/var/www/html/
       - ./app/:/var/www/html/
       - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - main-network
   db:
     image: mysql:latest
     restart: always
@@ -21,10 +25,16 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: mysqldb
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - mysql-volume:/var/lib/
+    networks:
+      - main-network
 
 volumes:
   main-volume:
     external: true
   mysql-volume:
+    external: true
+
+networks:
+  main-network:
     external: true
