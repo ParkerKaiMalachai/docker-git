@@ -3,16 +3,28 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+    volumes:
+      - main-volume:/var/www/html/
+      - ./app/:/var/www/html/
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
+      - main-volume:/var/www/html/
       - ./app/:/var/www/html/
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
   db:
     image: mysql:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: mysqldb
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+volumes:
+  main-volume:
+    external: true
+  mysql-volume:
+    external: true
