@@ -1,8 +1,19 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm AS builder
+
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+
+COPY /app/ /app/
 
 WORKDIR /var/www/html
 
-COPY /app/ .
+FROM php:8.1-fpm-alpine
+
+COPY --from=builder /app .
 
 VOLUME [ "/var/www/html" ]
 
