@@ -18,8 +18,8 @@ restore:
 
 
 build:
-	docker compose -f $(DOCKER_COMPOSE) up --build
+	docker compose -f compose.yaml -f $(DOCKER_COMPOSE) up --build
 start: 
-	docker compose -f $(DOCKER_COMPOSE) up -d
+	docker compose -f compose.yaml -f $(DOCKER_COMPOSE) up -d
 down:
-	docker compose -f $(DOCKER_COMPOSE) down
+	docker compose -f compose.yaml -f $(DOCKER_COMPOSE) down
